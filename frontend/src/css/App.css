@@ -1,0 +1,17 @@
+.nav-fuera__div--container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.active {
+  background-color: blue;
+  color: aliceblue;
+}
+
+body {
+  background-color: rgb(7, 0, 68);
+  color: rgb(238, 238, 238);
+}
+
+/*# sourceMappingURL=App.css.map */
