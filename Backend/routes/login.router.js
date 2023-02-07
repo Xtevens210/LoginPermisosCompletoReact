@@ -57,13 +57,34 @@ router.post('/registro', async (req, res, next) => {
     })
 })
 
-
+//Metodo get
 router.get('/', validarToken ,async (req, res, next) => {
     usuario = req.user;
 
     try {
         const data = await Login.find();
         res.status(200).send(usuario);
+    } catch (error) {
+        res.status(500).send({
+            mensaje:"Error al enviar los datos",
+            error: error.message
+        })
+    }
+})
+
+//Metodo get registro
+router.get('/registro/comprobacion', validarToken ,async (req, res, next) => {
+    usuario = req.user;
+
+    try {
+        const data = await Login.find();
+
+        //Creamos un map con solo los nombres de los usuarios.
+        let usuarios = data.map(function(element){
+            return element.usuario;
+        })
+
+        res.status(200).send(usuarios);
     } catch (error) {
         res.status(500).send({
             mensaje:"Error al enviar los datos",
