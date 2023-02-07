@@ -28,6 +28,7 @@ export default function Registro() {
     }, [datos])
 
 
+
     return (
         <div>
             <Formik
@@ -42,8 +43,30 @@ export default function Registro() {
                         let errores = {};
 
                         if(!valores.usuario){
-                            errores.usuario = "Ingrese un usuario"
+                            errores.usuario = "Ingrese un usuario";
                         }
+
+                        if(datos.includes(valores.usuario)){
+                            errores.usuario = "Este usuario ya existe";
+                        }
+
+                        if(valores.contrasena1.length < 4){
+                            errores.contrasena1 = "Contraseña demasiado corta";
+                        }
+
+                        if(valores.usuario.length < 4){
+                            errores.usuario = "El nombre de usuario debe ser mas largo";
+                        }
+
+                        if(!valores.contrasena1){
+                            errores.contrasena1 = "Introduzca una contraseña";
+                        }
+
+                        if(valores.contrasena1 !== valores.contrasena2){
+                            errores.contrasena2 = "La contraseña no coincide";
+                        }
+
+                        return errores
                     }
                 }
             >
@@ -59,6 +82,7 @@ export default function Registro() {
                             >
                             </Field>
                         </div>
+                        <ErrorMessage name="usuario" component={() => <div>{errors.usuario}</div>}/>
                         <div>
                             <Field
                                 type="password"
@@ -68,6 +92,7 @@ export default function Registro() {
                             >
                             </Field>
                         </div>
+                        <ErrorMessage name="contrasena1" component={() => <div>{errors.contrasena1}</div>}/>
                         <div>
                             <Field
                                 type="password"
@@ -77,6 +102,9 @@ export default function Registro() {
                             >
                             </Field>
                         </div>
+                        <ErrorMessage name="contrasena2" component={() => <div>{errors.contrasena2}</div>}/>
+
+                        <button type="submit">Registrarse</button>
                     </Form>
                 )
             }
