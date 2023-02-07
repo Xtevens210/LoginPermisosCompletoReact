@@ -33,7 +33,7 @@ const login = require('./routes/login.router');
 
 
 //Enrutamiento
-app.use('/login', login);
+app.use('/api', login);
 
 
 
