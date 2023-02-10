@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Formik, Field, Form, ErrorMessage }  from 'formik';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Registro() {
     const [ datos, setDatos ] = useState([]);
+    const [ registroExitoso, setRegistroExitoso ] = useState("");
 
+
+    const navegar = useNavigate();
 
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoieHRldmVuczIxMCIsImlhdCI6MTY3NTczODY1M30.sBdstfqPvg4cMFj73DORlSNeGPgWptOVZ0DeEoCKkFs';
 
@@ -23,14 +27,10 @@ export default function Registro() {
     }, []);
 
 
-    useEffect(() => {
-        console.log(datos);
-    }, [datos])
-
-
 
     return (
         <div>
+            {registroExitoso}
             <Formik
                 initialValues={{
                     usuario: "",
@@ -67,6 +67,41 @@ export default function Registro() {
                         }
 
                         return errores
+                    }
+                }
+                onSubmit={
+                    async(valores, {resetForm}) => {
+                        //console.log("datos",valores.usuario, " ", valores.contrasena1, " ", valores.contrasena2);
+
+                        try {
+                            let config = {
+                                method: 'POST',
+                                headers: {
+                                    'accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },body: JSON.stringify({
+                                    usuario: valores.usuario,
+                                    contrasena: valores.contrasena1,
+                                    permisos: []
+                                })
+                            }
+                            let res = await fetch('http://localhost:3500/api/registro',config)
+                            let json = await res.json();
+
+                            //Creamos un if que si el server nos responde que el usuario se registro correctamente haga una accion y si no mande un letrero de error al registrar.
+                            if(json.mensaje === "Usuario registrado correctamente"){
+                                setRegistroExitoso("Registro Exitoso");
+                                setTimeout(() => {
+                                    navegar('/login');
+                                }, 2000);
+                                resetForm();
+                            }else{
+                                setRegistroExitoso("Error al registrar usuario");
+                            }
+
+                        } catch (error) {
+                            console.error("Error de registro", error);
+                        }
                     }
                 }
             >

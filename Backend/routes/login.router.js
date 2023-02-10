@@ -38,6 +38,8 @@ const validarToken = (req, res, next) => {
 router.post('/registro', async (req, res, next) => {
     const { usuario, contrasena } = req.body;
 
+    console.log("usuario", usuario);
+
     const crearUsuario = new Login({
         usuario: usuario,
         contrasena: contrasena
