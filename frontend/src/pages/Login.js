@@ -1,12 +1,14 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Login() {
+    const [ notificacion, setNotificacion ] = useState("");
 
 
 
     return (
         <div>
+            {notificacion}
             <Formik
                 initialValues={{
                     usuario: "",
@@ -44,6 +46,19 @@ export default function Login() {
                             }
                             let res = await fetch('http://localhost:3500/api/autenticacion',config)
                             let json = await res.json();
+                            let authorizationValue = res.headers.get('Authorization')
+
+                            if(json.mensaje === "Este usuario no existe"){
+                                setNotificacion("Este usuario no existe");
+                            }else if(json.mensaje === "Usuario y contrasena incorrectos"){
+                                setNotificacion("Usuario y contraseña incorrectos");
+                            }else if(json.mensaje === "Usuario autenticado correctamente"){
+
+                                setNotificacion("Usuario autenticado correctamente");
+                                console.log("header", authorizationValue);
+                            }else{
+                                setNotificacion("Hubo un error en la autenticacion.")
+                            }
 
                             //Pendiente hacer las comprobaciones.
 

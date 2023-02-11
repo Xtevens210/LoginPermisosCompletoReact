@@ -119,11 +119,9 @@ router.post('/autenticacion', async (req, res, next) => {
                 const token = generarToken(usuarioParaToken);
 
 
-                res.set({
-                    'Content-Type': 'application/json',
-                    'Authorization': token
-                    });
-
+                res.header('Access-Control-Allow-Origin', '*');
+                res.header('Access-Control-Expose-Headers', 'Authorization');
+                res.header('Authorization', token);
 
                 res.status(200).send({
                 mensaje: "Usuario autenticado correctamente"
