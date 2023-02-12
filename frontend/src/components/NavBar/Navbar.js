@@ -5,10 +5,10 @@ import NavBarDentro from './NavBarDentro';
 import NavBarFuera from './NavBarFuera';
 
 export default function Navbar(props) {
-    const { usuario } = props;
+    const { usuario, setUsuario } = props;
     return (
         <nav>
-            { usuario ? (<NavBarDentro usuario={usuario}/>):(<NavBarFuera/>)}
+            { usuario ? (<NavBarDentro usuario={usuario} setUsuario={setUsuario}/>):(<NavBarFuera/>)}
         </nav>
     )
 }

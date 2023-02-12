@@ -11,16 +11,15 @@ const generarToken = (usuario) => {
 //Validar token
 const validarToken = (req, res, next) => {
     const token = req.header('Authorization');
-    console.log(token, "token");
 
-    if(!token){
-        res.status(500).send({
+    if(token === "null"){
+        res.status(401).send({
             mensaje: "Acceso denegado"
         });
     }else{
         jwt.verify(token, process.env.CLAVETOKEN, (err, usuario) => {
             if(err){
-                res.status(500).send({
+                res.status(401).send({
                     mensaje: "Token expirado o incorrecto"
                 });
             }else{
@@ -114,7 +113,7 @@ router.post('/autenticacion', async (req, res, next) => {
 
             if(result){
 
-                const usuarioParaToken = { usuario:usuario };
+                const usuarioParaToken = { usuario:usuarioDatos.usuario, permisos: usuarioDatos.permisos };
 
                 const token = generarToken(usuarioParaToken);
 

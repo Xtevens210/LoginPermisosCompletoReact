@@ -1,19 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export default function NavBarDentro(props) {
   const [ admin, setAdmin ] = useState(false);
-  const { usuario } = props;
+  const { usuario, setUsuario } = props;
+
+  const navegar = useNavigate();
 
 
 
 
   useEffect(() => {
-    if(usuario.roles.includes("admin")){
+    if(usuario.permisos.includes("admin")){
       setAdmin(true);
     }
   }, []);
 
+
+  const cerrarSesion = () => {
+    console.log("Ejecutando cierre de sesion");
+    setUsuario(null);
+    localStorage.removeItem('Token');
+    navegar('/');
+  }
 
 
 
@@ -35,6 +44,7 @@ export default function NavBarDentro(props) {
           </li>
         ):("") }
       </ul>
+      <button onClick={() => cerrarSesion()}>Cerrar sesión</button>
     </div>
   )
 }

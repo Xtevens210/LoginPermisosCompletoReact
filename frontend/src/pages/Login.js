@@ -1,10 +1,12 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function Login(props) {
     const [ notificacion, setNotificacion ] = useState("");
+    const navegar = useNavigate();
 
-
+    const { loginActivo, setLoginActivo } = props
 
     return (
         <div>
@@ -55,17 +57,22 @@ export default function Login() {
                             }else if(json.mensaje === "Usuario autenticado correctamente"){
 
                                 setNotificacion("Usuario autenticado correctamente");
-                                console.log("header", authorizationValue);
+                                //Definimos un if que cambia el estado de login activo para indicarle a la app que hubo un login.
+                                if(loginActivo === 1){
+                                    setLoginActivo(2);
+                                }else{
+                                    setLoginActivo(1);
+                                }
+                                //guardar el token recibido en el navegador.
+                                localStorage.setItem("Token", authorizationValue);
+                                //Nos redirigimos a la pagina home despues del acceso.
+                                navegar('/home');
                             }else{
                                 setNotificacion("Hubo un error en la autenticacion.")
                             }
-
-                            //Pendiente hacer las comprobaciones.
-
                         } catch (error) {
-                            
+                            console.error("Error con el login", error);
                         }
-
                     }
                 }
             >
